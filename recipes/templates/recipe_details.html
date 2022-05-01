@@ -1,0 +1,41 @@
+{% extends 'base.html'%}
+{% block title%}
+    {post.title}
+{% endblock%}
+{% block content%}
+<h1>{{post.title}}</h1>
+<small>By: {{post.author.first_name}}{{post.author.last_name}}</small> -
+    {% if user.is_authenticated %}
+        {% if user.id == post.author.id %}
+        <a href = "{% url 'update_recipe' post.pk %}" class="link-info">Edit</a>
+        <a href = "{% url 'delete_recipe' post.pk %}" class="link-info">Delete</a>
+        {% endif %}
+    {% endif %}
+<hr>
+<br/>
+    {%if post.header_image%}
+      <img src="{{post.header_image.url}}" style="width:500px;height:300px;">
+    {%endif%}
+<br/>
+<br/>
+{{post.body}}
+<br/><br/>
+<h5>Comments</h5>
+{%if not post.comments.all%}
+  No Comments <a href="{%url 'add_comment' post.pk%}">Add one</a>
+{%else%}
+  {%for comment in post.comments.all%}
+    <strong>
+      {{comment.name}}
+      {{comment.created_at}}
+    </strong>
+    <br/>
+    {{comment.body}}
+    <br/>
+    <hr>
+  {%endfor%}
+  <a href="{% url 'add_comment' post.pk %}">Add Comment</a>
+{%endif%}
+<br/><br/>
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+{% endblock %}

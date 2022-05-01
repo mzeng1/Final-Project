@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+{% block title%}Add A Recipe{% endblock %}
+{% block content%}
+{% if user.is_authenticated %}
+<h1>Add An Recipe</h1>
+<hr>
+<br/>
+<div class="form-group">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.media}}
+        {{form.as_p}}
+        <button class="btn btn-secondary">Post</button>
+    </form>
+</div>
+{% else %}
+You are not allowed to update!
+{% endif %}
+{% endblock %}
